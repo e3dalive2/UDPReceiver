@@ -18,29 +18,37 @@ file(GLOB HEADER_FILES *.h *.hpp)
 FetchContent_Declare(
   spdlog
   GIT_REPOSITORY https://github.com/gabime/spdlog.git
-  GIT_TAG v1.14.1  # Specify the version you want
+  GIT_TAG v1.14.1 
 )
 FetchContent_MakeAvailable(spdlog)
 
 FetchContent_Declare(
   asio
   GIT_REPOSITORY https://github.com/chriskohlhoff/asio.git
-  GIT_TAG asio-1-31-0  # Specify the version you want
+  GIT_TAG asio-1-31-0  
 )
 FetchContent_MakeAvailable(asio)
 
 FetchContent_Declare(
   utfcpp
   GIT_REPOSITORY https://github.com/nemtrif/utfcpp.git
-  GIT_TAG v4.0.5  # Specify the version you want
+  GIT_TAG v4.0.5 
 )
 FetchContent_MakeAvailable(utfcpp)
+
+FetchContent_Declare(
+  concurrentqueue
+  GIT_REPOSITORY https://github.com/cameron314/concurrentqueue.git
+  GIT_TAG v1.0.4
+)
+FetchContent_MakeAvailable(concurrentqueue)
 
 
 # Create the executable from all .cpp files + add better ide visibility
 add_executable(UDPReciever ${SRC_FILES} ${HEADER_FILES})
 target_include_directories(UDPReciever PRIVATE ${asio_SOURCE_DIR})
 target_include_directories(UDPReciever PRIVATE ${utfcpp_SOURCE_DIR})
+target_include_directories(UDPReciever PRIVATE ${concurrentqueue_SOURCE_DIR})
 
 target_compile_definitions(UDPReciever PRIVATE SPDLOG_WCHAR_TO_UTF8_SUPPORT)
  
