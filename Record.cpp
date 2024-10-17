@@ -4,22 +4,35 @@
 #include <spdlog/spdlog.h>
 #include "Tools.hpp"
 
-Record::Record(const char *data, size_t len, const std::string &source)
+Record::Record(const char *data, size_t len, const std::string &source,long long stamp)
     : blob_{data, data + len}
     , source_{source}
+    , stamp_{stamp}
 {
 }
 
-void Record::process()
+Record::Record()
+{
+
+}
+
+void Record::process(std::ofstream &f)
 {
     std::string text(blob_.data(), blob_.size());
 
+    auto date = convertEpochToHumanReadable(stamp_);
+
+    f << source_ << " " << date; 
     if (is_ascii_string(blob_.data(), blob_.size())) {
         spdlog::info("Data received (in string): {}", text);
+        f << text;
     } else if (utf8::is_valid(text)) {
         spdlog::info("Data received (in utf8): {}", text);
+        f << text;
     } else {
         std::string binary_data = to_hex((unsigned char *)blob_.data(), blob_.size());
         spdlog::info("Data received (in binary): {}", binary_data);
+        f << binary_data;
     }
+    f << std::endl;
 }

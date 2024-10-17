@@ -1,7 +1,4 @@
 
-#define _WINSOCK_DEPRECATED_NO_WARNINGS
-#define _SILENCE_ALL_MS_EXT_DEPRECATION_WARNINGS
-
 #include <spdlog/spdlog.h>
 
 #include "Tools.hpp"

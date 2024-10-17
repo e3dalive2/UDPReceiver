@@ -2,6 +2,7 @@
 
 #include <codecvt>
 #include <spdlog/spdlog.h>
+#include <spdlog/fmt/chrono.h>
 
 bool is_ascii_string(const char *data, std::size_t length)
 {
@@ -33,4 +34,27 @@ std::string to_hex(const unsigned char *data, std::size_t length)
         hex_str += fmt::format("{:02x}", data[i]); // Format each byte as hex (2 digits, lowercase)
     }
     return hex_str;
+}
+
+long long getCurrentEpochTime()
+{
+    // Get current time point
+    auto now = std::chrono::system_clock::now();
+
+    // Convert to epoch time (seconds)
+    auto epoch_time = std::chrono::duration_cast<std::chrono::seconds>(now.time_since_epoch()).count();
+
+    return epoch_time;
+}
+
+std::string convertEpochToHumanReadable(long long epoch)
+{
+    // Convert epoch time to time_t
+    std::time_t time = static_cast<std::time_t>(epoch);
+
+    // Convert to local time
+    std::tm local_time = *std::localtime(&time);
+
+    // Format the time using fmt library
+    return fmt::format("{:%Y-%m-%d %H:%M:%S}", local_time);
 }
