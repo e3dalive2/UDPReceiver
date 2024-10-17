@@ -9,8 +9,7 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Include directories for header files
-include_directories(include)
-include_directories(".")
+include_directories(".") # for spdlog
 
 # Add all .cpp files from src as sources for the executable
 file(GLOB SRC_FILES *.cpp)
