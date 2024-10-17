@@ -19,8 +19,8 @@ public:
     inline void setLogger(shLogger logger) { logger_ = logger; }
 
 private:
-    void start_receive();
-    void handle_receive(std::size_t length);
+    void startReceive();
+    void handleReceive(std::size_t length);
 
     audp::socket socket_;
     audp::endpoint remote_endpoint_;

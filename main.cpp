@@ -28,8 +28,7 @@ int main(int argc, char *argv[])
     std::string filterString = ".*";
     std::string recordPath = "records.txt";
 
-    try
-    {
+    try {
         // Command line argument parsing
         for (int i = 1; i < argc; ++i) {
             std::string arg = argv[i];
@@ -42,9 +41,7 @@ int main(int argc, char *argv[])
                 if (uPort == 0) {
                     spdlog::error("Invalid port number provided. Using default: {}", uPort);
                     port = 27020;
-                }
-                else
-                {
+                } else {
                     port = uPort;
                 }
             } else if (arg == "--bindIP" && (i + 1 < argc)) {
@@ -65,13 +62,11 @@ int main(int argc, char *argv[])
         }
 
         spdlog::info("Configuration:");
-        spdlog::info("  Port: {}", port);
-        spdlog::info("  Bind IP: {}", bindIP);
-        spdlog::info("  Filter String: {}", filterString);
-        spdlog::info("  Record Path: {}", recordPath);
-    }
-    catch (std::exception e)
-    {
+        spdlog::info("Port: {}", port);
+        spdlog::info("Bind IP: {}", bindIP);
+        spdlog::info("Filter String: {}", filterString);
+        spdlog::info("Record Path: {}", recordPath);
+    } catch (std::exception e) {
         spdlog::error("parsing params failed with {}", e.what());
     }
 
@@ -80,10 +75,10 @@ int main(int argc, char *argv[])
 
         auto logger = std::make_shared<Logger>(recordPath);
 
-        UDPServer server(io_context, bindIP, port); // Listening on port 12345
+        auto server = std::make_unique<UDPServer>(io_context, bindIP, port); // Listening on port 12345
 
-        server.setFilter(filterString);
-        server.setLogger(logger);
+        server->setFilter(filterString);
+        server->setLogger(logger);
 
         io_context.run(); // Start the ASIO event loop
     } catch (std::exception &e) {

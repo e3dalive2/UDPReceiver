@@ -1,8 +1,8 @@
 #include "Tools.hpp"
 
 #include <codecvt>
-#include <spdlog/spdlog.h>
 #include <spdlog/fmt/chrono.h>
+#include <spdlog/spdlog.h>
 
 bool IsAsciiString(const char *data, std::size_t length)
 {

@@ -9,24 +9,24 @@ UDPServer::UDPServer(asio::io_context &io_context, const std::string &ip, short 
     : socket_(io_context, asio::ip::udp::endpoint(asio::ip::make_address(ip), port))
 {
     spdlog::info("starting UDP server on {}:{}", ip, port);
-    start_receive();
+    startReceive();
 }
 
-void UDPServer::start_receive()
+void UDPServer::startReceive()
 {
     socket_.async_receive_from(
         asio::buffer(recv_buffer_), remote_endpoint_, [this](std::error_code ec, std::size_t bytes_recvd) {
             if (!ec && bytes_recvd > 0) {
-                handle_receive(bytes_recvd);
-                start_receive();
+                handleReceive(bytes_recvd);
+                startReceive();
             } else {
                 spdlog::error("Error receiving: {}", ec.message());
-                start_receive();
+                startReceive();
             }
         });
 }
 
-void UDPServer::handle_receive(std::size_t length)
+void UDPServer::handleReceive(std::size_t length)
 {
     // Log the sender's IP address and port
     std::string source = fmt::format("{}:{}", remote_endpoint_.address().to_string(), remote_endpoint_.port());
