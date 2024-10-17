@@ -1,0 +1,43 @@
+Language: Cpp
+Standard: Cpp11
+TabWidth: 4
+UseTab: Never
+
+BasedOnStyle: LLVM
+
+AccessModifierOffset: -4
+AlignAfterOpenBracket: DontAlign
+AlignEscapedNewlines: Left
+AllowShortFunctionsOnASingleLine: InlineOnly
+AlwaysBreakTemplateDeclarations: true
+
+BraceWrapping:   
+  AfterClass:      true
+  AfterControlStatement: false
+  AfterEnum:       true
+  AfterFunction:   true
+  AfterNamespace:  false
+  AfterObjCDeclaration: false
+  AfterStruct:     true
+  AfterUnion:      true
+  AfterExternBlock: true
+  BeforeCatch:     false
+  BeforeElse:      false
+  IndentBraces:    false
+  SplitEmptyFunction: true
+
+BreakBeforeBraces: Custom
+BreakBeforeInheritanceComma: false
+BreakConstructorInitializersBeforeComma: true
+
+ColumnLimit: 120
+
+IndentWidth: 4
+IndentPPDirectives: AfterHash
+
+ObjCBlockIndentWidth: 4
+
+SortIncludes: true
+SortUsingDeclarations: true
+SpaceAfterTemplateKeyword: false
+SpacesInContainerLiterals: false

@@ -22,8 +22,6 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(spdlog)
 
-
-# Fetch ASIO (the standalone version)
 FetchContent_Declare(
   asio
   GIT_REPOSITORY https://github.com/chriskohlhoff/asio.git
@@ -31,7 +29,6 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(asio)
 
-# Fetch ASIO (the standalone version)
 FetchContent_Declare(
   utfcpp
   GIT_REPOSITORY https://github.com/nemtrif/utfcpp.git
