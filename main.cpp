@@ -63,6 +63,12 @@ int main(int argc, char *argv[])
                 spdlog::warn("Unknown argument: {}", arg);
             }
         }
+
+        spdlog::info("Configuration:");
+        spdlog::info("  Port: {}", port);
+        spdlog::info("  Bind IP: {}", bindIP);
+        spdlog::info("  Filter String: {}", filterString);
+        spdlog::info("  Record Path: {}", recordPath);
     }
     catch (std::exception e)
     {
@@ -75,8 +81,6 @@ int main(int argc, char *argv[])
         auto logger = std::make_shared<Logger>(recordPath);
 
         UDPServer server(io_context, bindIP, port); // Listening on port 12345
-        spdlog::info("filter {}", filterString);
-        spdlog::info("output {}", recordPath);
 
         server.setFilter(filterString);
         server.setLogger(logger);

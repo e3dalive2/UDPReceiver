@@ -47,11 +47,18 @@ FetchContent_MakeAvailable(concurrentqueue)
 # Create the executable from all .cpp files + add better ide visibility
 add_executable(UDPReciever ${SRC_FILES} ${HEADER_FILES})
 target_include_directories(UDPReciever PRIVATE ${asio_SOURCE_DIR})
+include_directories(${asio_SOURCE_DIR}/asio/include)
+
 target_include_directories(UDPReciever PRIVATE ${utfcpp_SOURCE_DIR})
 target_include_directories(UDPReciever PRIVATE ${concurrentqueue_SOURCE_DIR})
 
-target_compile_definitions(UDPReciever PRIVATE SPDLOG_WCHAR_TO_UTF8_SUPPORT SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING 
-_SILENCE_ALL_MS_EXT_DEPRECATION_WARNINGS _WINSOCK_DEPRECATED_NO_WARNINGS)
+
+
+if(WIN32)
+    target_compile_definitions(UDPReciever PRIVATE SPDLOG_WCHAR_TO_UTF8_SUPPORT)
+endif()
+target_compile_definitions(UDPReciever PRIVATE SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING 
+_SILENCE_ALL_MS_EXT_DEPRECATION_WARNINGS _WINSOCK_DEPRECATED_NO_WARNINGS ASIO_STANDALONE)
  
 
 target_link_libraries(UDPReciever PRIVATE spdlog::spdlog)

@@ -1,10 +1,10 @@
 #pragma once
-
-#include "Record.hpp"
-#include <memory>
-#include <string>
-#include <mutex>
+#include <condition_variable>
 #include <fstream>
+#include <memory>
+#include <mutex>
+#include <string>
+#include "Record.hpp"
 
 #include <concurrentqueue.h>
 namespace mc = moodycamel;
@@ -15,9 +15,9 @@ public:
     Logger(const std::string &targetFile);
     ~Logger();
     // thread-safe
-    void addData(char *data, std::size_t len,const std::string &source);
+    void addData(char *data, std::size_t len, const std::string &source);
 
-	void run();
+    void run();
 
 private:
     std::thread worker_thread;
