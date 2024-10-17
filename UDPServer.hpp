@@ -5,11 +5,11 @@
 
 #include "Logger.hpp"
 
-using audp=asio::ip::udp;
+using audp = asio::ip::udp;
 
 constexpr auto kMaxUDPBufferSize = 65507 - 8; // max size of UDP datagram minus the header
 
-using shLogger=std::shared_ptr<Logger>;
+using shLogger = std::shared_ptr<Logger>;
 class UDPServer
 {
 public:

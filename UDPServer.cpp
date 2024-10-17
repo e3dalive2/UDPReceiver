@@ -1,10 +1,9 @@
 #include "UDPServer.hpp"
 #include <spdlog/spdlog.h>
 
-#include "source/utf8.h"
 #include "Tools.hpp"
+#include "source/utf8.h"
 #include <regex>
-
 
 UDPServer::UDPServer(asio::io_context &io_context, const std::string &ip, short port)
     : socket_(io_context, asio::ip::udp::endpoint(asio::ip::make_address(ip), port))
@@ -38,7 +37,7 @@ void UDPServer::handle_receive(std::size_t length)
     try {
         std::string text(recv_buffer_.data(), length);
 
-        if (utf8::is_valid(text))//filter for text/utf8 only
+        if (utf8::is_valid(text)) // filter for text/utf8 only
         {
             std::regex pattern(filter_);
             if (!std::regex_search(text, pattern)) {
@@ -46,10 +45,8 @@ void UDPServer::handle_receive(std::size_t length)
                 return; // filter
             }
         }
-        
 
-        if (logger_)
-        {
+        if (logger_) {
             logger_->addData(recv_buffer_.data(), length, source);
         }
     } catch (std::exception &e) {

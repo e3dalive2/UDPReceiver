@@ -4,7 +4,7 @@
 #include <spdlog/spdlog.h>
 #include <spdlog/fmt/chrono.h>
 
-bool is_ascii_string(const char *data, std::size_t length)
+bool IsAsciiString(const char *data, std::size_t length)
 {
     for (std::size_t i = 0; i < length; ++i) {
         if (data[i] < 32 || data[i] > 126) // ASCII printable range
@@ -15,7 +15,7 @@ bool is_ascii_string(const char *data, std::size_t length)
     return true;
 }
 
-bool is_utf8_string(const char *data, std::size_t length)
+bool IsUtf8String(const char *data, std::size_t length)
 {
     try {
         std::string str(data, length);
@@ -27,7 +27,7 @@ bool is_utf8_string(const char *data, std::size_t length)
     }
 }
 
-std::string to_hex(const unsigned char *data, std::size_t length)
+std::string ToHex(const unsigned char *data, std::size_t length)
 {
     std::string hex_str;
     for (std::size_t i = 0; i < length; i++) {
@@ -36,7 +36,7 @@ std::string to_hex(const unsigned char *data, std::size_t length)
     return hex_str;
 }
 
-long long getCurrentEpochTime()
+long long GetCurrentEpochTime()
 {
     // Get current time point
     auto now = std::chrono::system_clock::now();
@@ -47,7 +47,7 @@ long long getCurrentEpochTime()
     return epoch_time;
 }
 
-std::string convertEpochToHumanReadable(long long epoch)
+std::string ConvertEpochToHumanReadable(long long epoch)
 {
     // Convert epoch time to time_t
     std::time_t time = static_cast<std::time_t>(epoch);

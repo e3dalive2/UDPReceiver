@@ -4,9 +4,9 @@
 #include <string>
 #include <vector>
 
-bool is_ascii_string(const char *data, std::size_t length);
-bool is_utf8_string(const char *data, std::size_t length);
+bool IsAsciiString(const char *data, std::size_t length);
+bool IsUtf8String(const char *data, std::size_t length);
 
-std::string to_hex(const unsigned char *data, std::size_t length);
-long long getCurrentEpochTime();
-std::string convertEpochToHumanReadable(long long epoch);
+std::string ToHex(const unsigned char *data, std::size_t length);
+long long GetCurrentEpochTime();
+std::string ConvertEpochToHumanReadable(long long epoch);

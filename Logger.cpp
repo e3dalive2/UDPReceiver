@@ -30,7 +30,7 @@ Logger::~Logger()
 
 void Logger::addData(char *data, std::size_t len, const std::string &source)
 {
-    Record record(data, len, source, getCurrentEpochTime());
+    Record record(data, len, source, GetCurrentEpochTime());
     q_.enqueue(std::move(record));
     cv_.notify_one(); // Notify one waiting consumer
 }

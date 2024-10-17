@@ -1,9 +1,9 @@
 
 #include <spdlog/spdlog.h>
 
+#include "Logger.hpp"
 #include "Tools.hpp"
 #include "UDPServer.hpp"
-#include "Logger.hpp"
 
 int main()
 {
