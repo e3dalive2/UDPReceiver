@@ -35,5 +35,5 @@ FetchContent_MakeAvailable(asio)
 
 # Create the executable from all .cpp files + add better ide visibility
 add_executable(UDPReciever ${SRC_FILES} ${HEADER_FILES})
-
+target_include_directories(UDPReciever PRIVATE ${asio_SOURCE_DIR})
 target_link_libraries(UDPReciever PRIVATE spdlog::spdlog)

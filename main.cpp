@@ -3,67 +3,76 @@
 #define _WINSOCK_DEPRECATED_NO_WARNINGS
 #define _SILENCE_ALL_MS_EXT_DEPRECATION_WARNINGS
 #define ENET_IMPLEMENTATION
-#include <sockets-cpp/UdpSocket.h>
+
 
 #include <spdlog/spdlog.h>
 
-class UnicastApp {
+#include <asio/include/asio.hpp>
+
+using asio::ip::udp;
+
+class UDPServer {
 public:
-	// UDP Multicast
-	UnicastApp(const char* remoteAddr, const char* listenAddr, uint16_t localPort, uint16_t port);
-
-	virtual ~UnicastApp() = default;
-
-	void onReceiveData(const char* data, size_t size);
-
-	void sendMsg(const char* data, size_t len);
+	UDPServer(asio::io_context& io_context, short port)
+		: socket_(io_context, udp::endpoint(udp::v4(), port)) {
+		start_receive();
+	}
 
 private:
-	sockets::SocketOpt m_socketOpts;
-	sockets::UdpSocket<UnicastApp> m_unicast;
+	void start_receive() {
+		// Prepare buffer for receiving data
+		socket_.async_receive_from(
+			asio::buffer(recv_buffer_), remote_endpoint_,
+			[this](std::error_code ec, std::size_t bytes_recvd) {
+				if (!ec && bytes_recvd > 0) {
+					handle_receive(bytes_recvd);
+				}
+				else {
+					start_receive(); // Continue receiving on error or empty
+				}
+			});
+	}
+
+	void handle_receive(std::size_t length) {
+		// Print the sender's IP address and port
+		std::cout << "Received packet from: "
+			<< remote_endpoint_.address().to_string() << ":"
+			<< remote_endpoint_.port() << "\n";
+
+		// Print binary data received
+		std::cout << "Data received (in binary): ";
+		for (std::size_t i = 0; i < length; ++i) {
+			printf("%02X ", static_cast<unsigned char>(recv_buffer_[i]));
+		}
+		std::cout << "\n";
+
+		// Echo the received data back to the sender
+		socket_.async_send_to(
+			asio::buffer(recv_buffer_, length), remote_endpoint_,
+			[this](std::error_code /*ec*/, std::size_t /*bytes_sent*/) {
+				start_receive();  // Start waiting for the next message
+			});
+	}
+
+	udp::socket socket_;
+	udp::endpoint remote_endpoint_;
+	std::array<char, 1024> recv_buffer_; // Buffer for receiving data
 };
-
-UnicastApp::UnicastApp(const char* remoteAddr, const char* listenAddr, uint16_t localPort, uint16_t port) : m_socketOpts({ sockets::TX_BUFFER_SIZE, sockets::RX_BUFFER_SIZE, listenAddr }), m_unicast(*this, &m_socketOpts) {
-	sockets::SocketRet ret = m_unicast.startUnicast(remoteAddr, localPort, port);
-	if (ret.m_success) {
-		std::cout << "Listening on UDP " << listenAddr << ":" << localPort << " sending to " << remoteAddr << ":" << port << "\n";
-	}
-	else {
-		std::cout << "Error: " << ret.m_msg << "\n";
-		exit(1); // NOLINT
-	}
-}
-
-void UnicastApp::sendMsg(const char* data, size_t len) {
-	auto ret = m_unicast.sendMsg(data, len);
-	if (!ret.m_success) {
-		std::cout << "Send Error: " << ret.m_msg << "\n";
-	}
-}
-
-void UnicastApp::onReceiveData(const char* data, size_t size) {
-	std::string str(reinterpret_cast<const char*>(data), size);
-
-	std::cout << "Received: " << str << "\n";
-}
 
 int main()
 {
-	const char* addr = "127.0.0.1";
-	const char* listenAddr = "127.0.0.1";
 	uint16_t port = 27020;
-	uint16_t localPort = 27020;
 
-	UnicastApp app(addr, listenAddr, localPort, port);
 
-	while (true) {
-		std::string data;
-		std::cout << "Data >";
-		std::getline(std::cin, data);
-		if (data == "quit") {
-			break;
-		}
-		app.sendMsg(data.data(), data.size());
+	try {
+		asio::io_context io_context;
+
+		UDPServer server(io_context, port); // Listening on port 12345
+
+		io_context.run(); // Start the ASIO event loop
+	}
+	catch (std::exception& e) {
+		std::cerr << "Exception: " << e.what() << "\n";
 	}
 
 	return 8;
