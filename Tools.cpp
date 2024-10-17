@@ -1,5 +1,7 @@
 #include "Tools.hpp"
 
+
+
 #include <codecvt>
 #include <spdlog/spdlog.h>
 
@@ -30,12 +32,12 @@ bool is_utf8_string(const char* data, std::size_t length)
 	}
 }
 
-std::string to_hex(const std::vector<unsigned char>& data)
+std::string to_hex(const unsigned char* data,std::size_t length)
 {
 	std::string hex_str;
-	for (const auto& byte : data)
+	for (std::size_t i=0;i<length;i++)
 	{
-		hex_str += fmt::format("{:02x}", byte);  // Format each byte as hex (2 digits, lowercase)
+		hex_str += fmt::format("{:02x}", data[i]);  // Format each byte as hex (2 digits, lowercase)
 	}
 	return hex_str;
 }

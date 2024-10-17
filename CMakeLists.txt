@@ -31,8 +31,21 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(asio)
 
+# Fetch ASIO (the standalone version)
+FetchContent_Declare(
+  utfcpp
+  GIT_REPOSITORY https://github.com/nemtrif/utfcpp.git
+  GIT_TAG v4.0.5  # Specify the version you want
+)
+FetchContent_MakeAvailable(utfcpp)
+
 
 # Create the executable from all .cpp files + add better ide visibility
 add_executable(UDPReciever ${SRC_FILES} ${HEADER_FILES})
 target_include_directories(UDPReciever PRIVATE ${asio_SOURCE_DIR})
+target_include_directories(UDPReciever PRIVATE ${utfcpp_SOURCE_DIR})
+
+target_compile_definitions(UDPReciever PRIVATE SPDLOG_WCHAR_TO_UTF8_SUPPORT)
+ 
+
 target_link_libraries(UDPReciever PRIVATE spdlog::spdlog)

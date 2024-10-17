@@ -9,8 +9,14 @@
 
 int main()
 {
+#ifdef WIN32
+	SetConsoleOutputCP(CP_UTF8);
+#endif
+
 	uint16_t port = 27020;
 	std::string bindIP = "127.0.0.1";
+	std::string filterString = "*";
+	std::string recordPath = "records.txt";
 
 	try {
 		asio::io_context io_context;
@@ -22,6 +28,5 @@ int main()
 	catch (std::exception& e) {
 		spdlog::error("Exception: {}", e.what());
 	}
-
 	return 8;
 }
