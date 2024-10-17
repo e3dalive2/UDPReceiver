@@ -1,6 +1,7 @@
 #include "Tools.hpp"
 
 #include <codecvt>
+#include <spdlog/spdlog.h>
 
 bool is_ascii_string(const char* data, std::size_t length)
 {
@@ -27,4 +28,14 @@ bool is_utf8_string(const char* data, std::size_t length)
 	{
 		return false;          // Invalid UTF-8
 	}
+}
+
+std::string to_hex(const std::vector<unsigned char>& data)
+{
+	std::string hex_str;
+	for (const auto& byte : data)
+	{
+		hex_str += fmt::format("{:02x}", byte);  // Format each byte as hex (2 digits, lowercase)
+	}
+	return hex_str;
 }
